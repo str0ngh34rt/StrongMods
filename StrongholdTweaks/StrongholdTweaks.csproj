@@ -6,14 +6,24 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\Release\</OutputPath>
   </PropertyGroup>
+  <PropertyGroup>
+    <SavesOutputPath>$(AppData)\7DaysToDie\Saves</SavesOutputPath>
+  </PropertyGroup>
+
   <ItemGroup>
-    <Content Include="**/*" Exclude="*.csproj" />
+    <Content Include="**/*" Exclude="*.csproj;Saves/**/*" />
+    <SavesContent Include="Saves/**/*" />
   </ItemGroup>
+
   <Target Name="Build">
     <Copy SourceFiles="@(Content)"
           DestinationFiles="@(Content->'$(OutputPath)\%(RecursiveDir)%(Filename)%(Extension)')"
           SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(SavesContent)"
+          DestinationFiles="@(SavesContent->'$(SavesOutputPath)\%(RecursiveDir)%(Filename)%(Extension)')"
+          SkipUnchangedFiles="true" />
   </Target>
+
   <Target Name="Clean">
     <RemoveDir Directories="$(OutputPath)" Condition="Exists('$(OutputPath)')" />
   </Target>
